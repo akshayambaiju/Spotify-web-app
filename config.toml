@@ -1,8 +1,0 @@
-[theme]
-base = "dark"
-primaryColor = "#0074d9"
-secondaryColor = "#d95b43"
-textColor = "#ffffff"
-backgroundColor = "#1e1e1e"
-font = "Roboto"
-fontSize = 16
