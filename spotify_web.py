@@ -9,15 +9,6 @@ from tqdm import tqdm
 from sklearn.preprocessing import MinMaxScaler
 from streamlit_option_menu import option_menu
 
-css = """
-    <style>
-        .stSlider label {
-            font-size: 12px; 
-        }
-    </style>
-"""
-
-st.markdown(css, unsafe_allow_html=True)
 # Load the preprocessed Spotify dataset (you can use your own dataset)
 data = pd.read_csv("spotify_dataset.csv")
 
