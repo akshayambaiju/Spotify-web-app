@@ -7,7 +7,9 @@ from sklearn.cluster import KMeans
 #Progreebar
 from tqdm import tqdm
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 from streamlit_option_menu import option_menu
+
 
 # Load the preprocessed Spotify dataset (you can use your own dataset)
 data = pd.read_csv("spotify_dataset.csv")
@@ -15,8 +17,19 @@ data = pd.read_csv("spotify_dataset.csv")
 # Preprocess data and create feature matrix X and target vector y
 # (Assuming you already have the data preprocessed)
 
-# defining predictors
-X = data[["energy","danceability","liveness","acousticness","instrumentalness"]]
+X = data[['key_value',
+                     'acousticness',
+                     'danceability',
+                     'energy',
+                     'instrumentalness',
+                     'liveness',
+                     'loudness',
+                     'mode',
+                     'speechiness',
+                     'tempo',
+                     'valence',
+                     'year']]
+
 #x = np.array(x).reshape(-1, 1)
 
 # target variable
@@ -29,8 +42,8 @@ model = RandomForestRegressor()
 model.fit(X_train, y_train)
 
 # Function to predict song popularity based on input features
-def predict_popularity(acousticness, danceability, energy, instrumentalness, liveness, speechiness, tempo, valence):
-    features = np.array([[acousticness, danceability, energy, instrumentalness, liveness]])
+def predict_popularity(key_value,acousticness, danceability, energy, instrumentalness, liveness, loudness, mode, speechiness, tempo, valence, year):
+    features = np.array([[key_value, acousticness, danceability, energy, instrumentalness, liveness, loudness, mode, speechiness, tempo, valence, year]])
     prediction = model.predict(features)
     return prediction[0]
 
@@ -134,28 +147,36 @@ def home_page():
     
     # Define the sidebar form components
     with st.sidebar.form(key='prediction_form'):
+        st.slider("Key", 0, 11, 1, key='key_value')
         st.slider("Acousticness", 0.0, 1.0, 0.5, key='acousticness')
         st.slider("Danceability", 0.0, 1.0, 0.5, key='danceability')
         st.slider("Energy", 0.0, 1.0, 0.5, key='energy')
         st.slider("Instrumentalness", 0.0, 1.0, 0.5, key='instrumentalness')
         st.slider("Liveness", 0.0, 1.0, 0.5, key='liveness')
+        st.slider("Loudness", -60, 0, -30, key='loudness')
+        st.slider("Mode", 0, 1, 1, key='mode')
         st.slider("Speechiness", 0.0, 1.0, 0.5, key='speechiness')
         st.slider("Tempo", 50, 200, 120, key='tempo')
         st.slider("Valence", 0.0, 1.0, 0.5, key='valence')
+        st.slider("Year", 2000, 2023, 2023, key='year', disabled=True)
         submitted = st.form_submit_button("Predict Popularity")
         
     # Check if the form is submitted
     if submitted:
         with st.spinner("Predicting..."):
             prediction = predict_popularity(
+                st.session_state.key_value,
                 st.session_state.acousticness,
                 st.session_state.danceability,
                 st.session_state.energy,
                 st.session_state.instrumentalness,
                 st.session_state.liveness,
+                st.session_state.loudness,
+                st.session_state.mode,
                 st.session_state.speechiness,
                 st.session_state.tempo,
-                st.session_state.valence
+                st.session_state.valence,
+                st.session_state.year
             )
             st.sidebar.success(f"Predicted Song Popularity: {prediction:.2f}")
 
@@ -192,10 +213,16 @@ def About_page():
     """
     st.subheader('Audio Features Explanation')
 
+import streamlit as st
+
 def Visualizations_page():
     st.header('Visualization Dashboard')
     with st.spinner("Loading..."):
         st.image("Dashboard_spotify.png", use_column_width=True)
+
+   # Provide a link to the Tableau dashboard
+    tableau_dashboard_url = "https://prod-uk-a.online.tableau.com/t/mydashboard2023ab/views/Dashboard/Dashboard2"
+    st.write(f"[Open Tableau Dashboard]({tableau_dashboard_url})")
     
 def main():
     
@@ -213,10 +240,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
