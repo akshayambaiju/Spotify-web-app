@@ -221,7 +221,7 @@ def Visualizations_page():
         st.image("Dashboard_spotify.png", use_column_width=True)
 
    # Provide a link to the Tableau dashboard
-    tableau_dashboard_url = "https://prod-uk-a.online.tableau.com/t/mydashboard2023ab/views/Dashboard/Dashboard2"
+    tableau_dashboard_url = "https://public.tableau.com/app/profile/akshaya.baiju/viz/Dashboard_16934875100830/Dashboard2"
     st.write(f"[Open Tableau Dashboard]({tableau_dashboard_url})")
     
 def main():
