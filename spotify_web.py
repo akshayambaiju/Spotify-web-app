@@ -141,7 +141,6 @@ css = r'''
 st.markdown(css, unsafe_allow_html=True)
     
 def home_page():
-    st.set_page_config(layout="wide")
     st.title("Spotify Song Popularity Prediction and Recommendation")
     st.subheader("Enter songs and get recommendations")
     st.sidebar.title("Try predicting popularity based on audio features !")
